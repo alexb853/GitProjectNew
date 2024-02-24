@@ -6,6 +6,7 @@ on:
 jobs:
   BuildSimulation:
     # TODO abort this workflow if the git user triggered it is not the release manager
+
     runs-on: ubuntu-latest
     if: github.actor == 'alexb853'
     steps:
