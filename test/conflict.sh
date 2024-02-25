@@ -2,14 +2,15 @@ git checkout feature/myfeature
 
 ENDPOINTS_ACTUAL=$(grep -oP '@app\.route\(\"\/\w*\"\)' ../app.py)
 
-ENDPOINTS_EXPECTED='''@app.route("/")
+ENDPOINTS_EXPECTED=
+''@app.route("/")
 @app.route("/status")
 @app.route("/blog")
 @app.route("/pricing")
 @app.route("/contact")
 @app.route("/chat")
 @app.route("/services")
-@app.route("/internal")'''
+@app.route("/internal")''
 
 
 if ! diff <(echo "$ENDPOINTS_ACTUAL") <(echo "$ENDPOINTS_EXPECTED") &> /dev/null
