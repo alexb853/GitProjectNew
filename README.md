@@ -215,3 +215,264 @@ bash merge_repos.sh
 
 # Gook Luck
 
+Work flow for the above questions:
+
+1. **Branches:**
+
+touch c1.txt
+
+git add c1.txt
+
+git config --global user.email "main@example.com"
+
+git commit --global user.name "main"
+
+git commit -m 'c1'
+
+git checkout -b arik/budfix1
+
+touch c10.txt
+
+git add c10.txt
+
+git config --global user.email "arik@bugfix1.com"
+
+git commit --global user.name "arik"
+
+git commit -m 'c10'
+
+touch c11.txt
+
+git add c11.txt
+
+git config --global user.email "arik@bugfix1.com"
+
+git commit --global user.name "arik"
+
+git commit -m 'c11'
+
+git checkout main
+
+touch c2.txt
+
+git add c2.txt
+
+git config --global user.email "main@example.com"
+
+git commit --global user.name "main"
+
+git commit -m 'c2'
+
+git checkout -b john/feature1
+
+touch c3.txt
+
+git add c3.txt
+
+git config --global user.email "john@feature1.com"
+
+git commit --global user.name "john"
+
+git commit -m 'c3'
+
+git checkout main
+
+git merge arik/bugfix1
+
+git tag v1.0.2 e7eb2c597dd0be06287d80e86a00ca3be00b3c59
+
+git checkout  john/feature1
+
+git checkout -b john/feature1-test
+
+touch c5.txt
+
+git add c5.txt
+
+git config --global user.email "john@feature1-test.com"
+
+git commit --global user.name "john-test"
+
+git commit -m 'c5'
+
+git checkout main
+
+touch c6.txt
+
+git add c6.txt
+
+git config --global user.email "main@example.com"
+
+git commit --global user.name "main"
+
+git commit -m 'c6'
+
+git checkout john/feature1
+
+touch c7.txt
+
+git add c7.txt
+
+git config --global user.email "john@feature1.com"
+
+git commit --global user.name "john"
+
+git commit -m 'c7'
+
+git checkout main
+
+git  merge john/feature1
+
+git tag v1.0.3 e0fb76f0da299172b20692257dc8438f6bf85a68
+
+git checkout john/feature1-test
+
+touch c8.txt
+
+git add c8.txt
+
+git config --global user.email "john@feature1-test.com"
+
+git commit --global user.name "john-test"
+
+git commit -m 'c8'
+
+git tag john-only
+
+git checkout main
+
+touch c9.txt
+
+git add c9.txt
+
+git config --global user.email "main@example.com"
+
+git commit --global user.name "main"
+
+git commit -m 'c9'
+
+
+
+
+
+
+
+2. **Merge Conflict:**
+
+2.1. git checkout -b feature/myfeature
+
+2.2. git merge origin/feature/virsion1
+   
+   git log
+
+2.3. git merge origin/feature/virsion2
+
+   nano origin/feature/virsion2
+
+
+
+
+
+
+3. **remove commit with senstive data:**
+
+git rev-list --all --grep="your_commit_message"
+
+git show commit_hash
+
+git branch -a --contains hash
+
+git rebase -i hash
+
+change pick to drop
+
+git push origin "branch name" --force
+
+nano .pre-commit-config.yaml
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+    -   id: check-yaml
+-   repo: local
+    hooks:
+    -   id: check-aws-credentials
+        name: Check AWS Credentials
+        entry: ./check_aws_credentials.sh
+        language: script
+        stages:
+        -   commit
+
+touch check_aws_credentials.sh
+nano check_aws_credentials.sh
+#!/bin/bash
+
+# Check for AWS credentials in staged changes
+if git diff --cached --name-only | xargs grep -E '(AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY|AWS_SESSIO>    echo "Error: AWS credentials detected in staged changes. Please remove them before committing."
+    exit 1
+fi
+
+exit 0
+
+chmod +x check_aws_credentials.sh
+
+pre-commit install
+
+pre-commit run --all-files
+
+nano c9
+AWS_ACCESS_KEY_ID=AKIA6BJMA3TKBADSHFXZ
+AWS_SECRET_ACCESS_KEY=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
+
+git add c9
+
+git commit -m 'test'
+
+(got an error)
+
+
+
+
+
+4. **Git workflow and remote:**
+
+4.2. on main- git checkout -b dev
+
+4.3. git checkout -b myfeatue dev
+
+4.4. touch devfile>> in github>>  pull requests>> create new>> alexb853/dev>myfeature
+
+4.5. in git hub>> actions on repo bar>>merge pull request #4>>deploy simulation
+
+4.6. git checkout -b release-v1.2 281c481008bde9db6a42323697dad948f2b1292c
+
+4.7.  touch QAfix, touch PMfix, touch releasecontent
+
+4.9. git push from release to main.
+in git >> cd .github>> cd workflows>> nano prod.yaml>>if: github.actor == 'alexb853'
+
+
+
+
+
+
+
+5. **merge two git repo:**
+
+git remote add GitExerciseOther https://github.com/alonitac/GitExerciseOther.git
+
+git fetch GitExerciseOther
+
+git checkout -b GitExerciseOther-main GitExerciseOther/main
+
+git checkout main 
+git merge GitExerciseOther-main --allow-unrelated-histories
+
+fixed conflict with README.md
+
+git add .
+git merge --continue
+
+git push origin main
+
+
